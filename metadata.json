@@ -1,0 +1,6 @@
+{
+  "name": "Wedding Invitation & Envelope Experience",
+  "description": "An interactive digital wedding invitation with a 3D animated envelope, customizable wax seal, Canva video embed, RSVP, countdown, and event details.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

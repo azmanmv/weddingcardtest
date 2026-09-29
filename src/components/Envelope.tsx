@@ -39,22 +39,11 @@ export const Envelope: React.FC<EnvelopeProps> = ({
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full select-none">
       {isOpen ? (
-        /* OPEN STATE: Display the inner invitation card */
-        <div className="relative flex flex-col items-center justify-center w-full animate-fade-in">
-          {/* Active Invitation & RSVP Card */}
-          <div className="relative z-30 w-full flex justify-center">
+        /* OPEN STATE: Display the inner invitation card centered */
+        <div className="relative flex flex-col items-center justify-center w-full h-full animate-fade-in">
+          {/* Active Invitation Card */}
+          <div className="relative z-30 w-full h-full flex items-center justify-center">
             {children}
-          </div>
-
-          {/* Quick Fold & Re-seal Action */}
-          <div className="mt-2.5 flex items-center justify-center z-20">
-            <button
-              onClick={() => onToggleOpen(false)}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-[#0e2a5e] hover:text-[#071b40] bg-white/95 hover:bg-white active:scale-95 backdrop-blur-md rounded-full border border-[#a8c5db] transition-all cursor-pointer shadow-sm"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0e2a5e]" />
-              <span>Fold &amp; Re-seal Envelope</span>
-            </button>
           </div>
         </div>
       ) : (

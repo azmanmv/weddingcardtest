@@ -7,7 +7,6 @@ import React, { useState, useEffect } from 'react';
 import { WeddingConfig, RsvpEntry } from './types/invitation';
 import { Envelope } from './components/Envelope';
 import { InvitationCard } from './components/InvitationCard';
-import { TopNav } from './components/TopNav';
 import { DetailsModal } from './components/DetailsModal';
 import { RsvpModal } from './components/RsvpModal';
 import { GuestbookModal } from './components/GuestbookModal';
@@ -102,33 +101,13 @@ export default function App() {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      {/* Soft backdrop wash only when open to give contrast to the open card */}
-      {isOpen && (
-        <div className="absolute inset-0 bg-white/20 backdrop-blur-[0.5px] pointer-events-none" />
-      )}
-
       {/* Ambient Falling Rose Petals & Golden Shimmer */}
       <PetalsCanvas enabled={config.petalsEnabled} />
-
-      {/* Top Mobile Bar - Only revealed after envelope opens */}
-      {isOpen && (
-        <div className="relative z-20 animate-fade-in shrink-0">
-          <TopNav
-            config={config}
-            isOpen={isOpen}
-            onToggleEnvelope={() => setIsOpen(!isOpen)}
-            onOpenDetails={() => setIsDetailsOpen(true)}
-            onOpenRsvp={() => setIsRsvpOpen(true)}
-            onOpenGuestbook={() => setIsGuestbookOpen(true)}
-            onOpenCustomizer={() => setIsCustomizerOpen(true)}
-          />
-        </div>
-      )}
 
       {/* Main Experience Viewport: Full screen with 0 margin on initial screen */}
       <main
         className={`flex-1 flex flex-col items-center justify-center relative z-10 overflow-hidden w-full ${
-          isOpen ? 'px-2 sm:px-4 py-2' : 'p-0 m-0 h-full'
+          isOpen ? 'p-1 sm:p-3' : 'p-0 m-0 h-full'
         }`}
       >
         {/* Portrait Envelope & Unfolded Card */}
@@ -138,7 +117,7 @@ export default function App() {
             isOpen={isOpen}
             onToggleOpen={setIsOpen}
           >
-            {/* The In-App Designed Royal Wedding Invitation & RSVP Card */}
+            {/* The In-App Designed Royal Wedding Invitation Card */}
             <InvitationCard
               config={config}
               onOpenDetails={() => setIsDetailsOpen(true)}
@@ -150,45 +129,54 @@ export default function App() {
         </div>
       </main>
 
-      {/* Mobile-First Thumb Navigation Dock - Only revealed after envelope opens */}
+      {/* Small Floating Buttons: Bottom Left & Bottom Right (Only revealed when envelope is open) */}
       {isOpen && (
-        <nav className="relative z-20 w-full h-12 sm:h-13 px-3 sm:px-4 bg-white/85 backdrop-blur-md border-t border-[#a8c5db]/70 flex items-center justify-around shrink-0 pb-safe shadow-md animate-fade-in">
-          {/* Toggle Envelope / Card */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium text-[#315280] hover:text-[#0e2a5e] transition-colors cursor-pointer"
-          >
-            <Mail className="w-4 h-4 text-[#315280]" />
-            <span>Fold Envelope</span>
-          </button>
+        <>
+          {/* Bottom Left: Fold Envelope & Program Details */}
+          <div className="fixed bottom-3 left-3 sm:bottom-5 sm:left-5 z-30 flex items-center gap-2 animate-fade-in">
+            {/* Fold Envelope */}
+            <button
+              onClick={() => setIsOpen(false)}
+              title="Fold & re-seal envelope"
+              className="h-9 sm:h-10 px-3 sm:px-3.5 rounded-full bg-white/90 hover:bg-white text-[#0e2a5e] backdrop-blur-md border border-[#a8c5db]/80 shadow-md hover:shadow-lg flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            >
+              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#163f70]" />
+              <span className="text-[11px] sm:text-xs font-semibold">Fold</span>
+            </button>
 
-          {/* Program & Venue Map */}
-          <button
-            onClick={() => setIsDetailsOpen(true)}
-            className="flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium text-[#315280] hover:text-[#0e2a5e] transition-colors cursor-pointer"
-          >
-            <Calendar className="w-4 h-4 text-[#0e2a5e]" />
-            <span>Program &amp; Map</span>
-          </button>
+            {/* Program & Map Details */}
+            <button
+              onClick={() => setIsDetailsOpen(true)}
+              title="Program schedule & venue map"
+              className="h-9 sm:h-10 px-3 sm:px-3.5 rounded-full bg-white/90 hover:bg-white text-[#0e2a5e] backdrop-blur-md border border-[#a8c5db]/80 shadow-md hover:shadow-lg flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            >
+              <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#163f70]" />
+              <span className="text-[11px] sm:text-xs font-semibold">Details</span>
+            </button>
+          </div>
 
-          {/* RSVP Action */}
-          <button
-            onClick={() => setIsRsvpOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#0e2a5e] to-[#1c3f7d] hover:from-[#183975] text-white text-xs font-bold shadow-md cursor-pointer transition-transform active:scale-95"
-          >
-            <Heart className="w-3.5 h-3.5 fill-white text-white" />
-            <span>RSVP</span>
-          </button>
+          {/* Bottom Right: Guestbook & RSVP Action */}
+          <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-30 flex items-center gap-2 animate-fade-in">
+            {/* Guestbook Wishes */}
+            <button
+              onClick={() => setIsGuestbookOpen(true)}
+              title="Leave warm wishes in the Guestbook"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-[#0e2a5e] backdrop-blur-md border border-[#a8c5db]/80 shadow-md hover:shadow-lg flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+            >
+              <MessageSquareHeart className="w-4 h-4 text-[#163f70]" />
+            </button>
 
-          {/* Guestbook Wishes */}
-          <button
-            onClick={() => setIsGuestbookOpen(true)}
-            className="flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium text-[#315280] hover:text-[#0e2a5e] transition-colors cursor-pointer"
-          >
-            <MessageSquareHeart className="w-4 h-4 text-[#0e2a5e]" />
-            <span>Guestbook</span>
-          </button>
-        </nav>
+            {/* Primary RSVP Action */}
+            <button
+              onClick={() => setIsRsvpOpen(true)}
+              title="RSVP Attendance"
+              className="h-9 sm:h-10 px-4 sm:px-5 rounded-full bg-gradient-to-r from-[#0e2a5e] to-[#1c3f7d] hover:from-[#15366c] hover:to-[#224b8f] text-white shadow-md hover:shadow-xl flex items-center gap-1.5 font-bold text-xs transition-all active:scale-95 cursor-pointer"
+            >
+              <Heart className="w-3.5 h-3.5 fill-white text-white" />
+              <span>RSVP</span>
+            </button>
+          </div>
+        </>
       )}
 
       {/* Modals & Drawers */}
